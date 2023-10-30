@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server22-deployment
+  labels:
+    app: server22
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server22
+  template:
+    metadata:
+      labels:
+        app: server22
+    spec:
+      containers:
+      - name: server22db
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+        - containerPort: 1433
+        env:
+        - name: ACCEPT_EULA
+          valueFrom:
+            secretKeyRef:
+              name: server22-secret
+              key: ACCEPT_EULA
+        - name: MSSQL_SA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: server22-secret
+              key: DBUSERPASSWORD
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server22-service
+spec:
+  selector:
+    app: server22
+  ports:
+  - protocol: TCP
+    port: 1433
+    targetPort: 1433

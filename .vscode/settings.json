@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/v1%40service": "file:///e%3A/DevOps%20-%20Projects/Inventory-k8s/server22.yaml"
+    }
+}
